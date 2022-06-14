@@ -31,6 +31,8 @@ namespace WebAPI.Models
             SqlCommand command;
             SqlDataReader dataReader;
             String sqlQuery, Output = "";
+
+
             //Assigning values, methods to variables
             sqlQuery = "Select DepartmentID, DepartmentName from department";
             command = new SqlCommand(sqlQuery, connection);
@@ -51,7 +53,7 @@ namespace WebAPI.Models
         }
         [HttpPost]
 
-        public JsonResult Post(Department department)
+        public JsonResult Post([FromQuery]Department department)
         {
             Response.ContentType = "application/json";
             Request.ContentType = "application/json";
@@ -76,7 +78,7 @@ namespace WebAPI.Models
             return new JsonResult("Added successfully");
         }
         [HttpPut]
-        public JsonResult Put(Department department)
+        public JsonResult Put([FromQuery]Department department)
         {
             string query = $@"update dbo.Department set DepartmentName = '{department.DepartmentName}' where DepartmentID = '{department.DepartmentID}'";
             DataTable table = new DataTable();
