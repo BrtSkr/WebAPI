@@ -30,9 +30,11 @@ namespace WebAPI.Models
             //Defined variables
             SqlCommand command;
             SqlDataReader dataReader;
-            String sqlQuery, Output = "";
-
-
+            String sqlQuery;
+            //All declarations of output that we will receive from API (All data is added in while loop as of 12.05.2022)
+            List<object> DepartmentID = new List<object>();
+            List<object> DepartmentName = new List<object>();
+            List<object> DataWrapper = new List<object>();
             //Assigning values, methods to variables
             sqlQuery = "Select DepartmentID, DepartmentName from department";
             command = new SqlCommand(sqlQuery, connection);
@@ -40,16 +42,22 @@ namespace WebAPI.Models
             int i = 0;
             while (dataReader.Read())
             {
-                Output = Output + dataReader.GetValue(0) + dataReader.GetValue(1) + " | ";
+                // Output = Output + dataReader.GetValue(0) + dataReader.GetValue(1) + " | ";
+                //Output.Add(new string() { dataReader.GetValue(0) }) ;
+                DepartmentID.Add(dataReader.GetValue(0));
+                DepartmentName.Add(dataReader.GetValue(1));
+                //Output.Add(dataReader.GetValue(0) + dataReader.GetValue(1) + "|");
                 i++;
             }
-            
+            DataWrapper.Add(DepartmentID);
+            DataWrapper.Add(DepartmentName);
+
             //Close every object
             dataReader.Close();
             command.Dispose();
             connection.Close();
             //In the end return everything that is inside output
-            return new JsonResult(Output);
+            return new JsonResult(DataWrapper);
         }
         [HttpPost]
 
